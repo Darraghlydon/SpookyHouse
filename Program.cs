@@ -29,7 +29,8 @@ int playerSanity = randomIntegerGenerator.Next(3,7);
 int roomNumber = 1;
 
 
-
+//For the game itself, if you see a ghost in a room and choose not to scare it away before you leave, your sanity will drop by 1.
+//If your sanity drops too low, bad things happen! 
 
 
 bool hasTorch = false;
