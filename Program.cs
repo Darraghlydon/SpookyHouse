@@ -36,6 +36,7 @@ int roomNumber = 1;
 bool hasTorch = false;
 bool hasKey = false;
 bool isTheKeyInThisRoom = false;
+bool isThereAGhostInThisRoom = false;
 
 string playerName = "";
 #endregion
@@ -50,4 +51,37 @@ Console.WriteLine("Welcome "+ playerName+". You are feeling as sane as the numbe
 Console.WriteLine("You have a battery capacity on your torch of "+batteryCapacity);
 Console.WriteLine("Which is unfortunate, as there are "+numberOfGhosts + " spooky ghosts in the house.");
 Console.WriteLine("You are in Room " + roomNumber);
+int nextValue = randomIntegerGenerator.Next(0, 1);
+if (nextValue==1)
+{
+    Console.WriteLine("There is a ghost in this room")
+    isThereAGhostInThisRoom = true;
+}
+
+if (isThereAGhostInThisRoom)
+{
+    Console.WriteLine("Do you want to scare the ghost with your torch?");
+    string answer = Console.ReadLine();
+    if (answer == 'Yes')
+    {
+        if (batteryCapacity > 0)
+        {
+            Console.WriteLine("You scared away the ghost!");
+            numberOfGhosts = numberOfGhosts - 1;
+        }
+        else
+        {
+            Console.WriteLine("You have no battery left!");
+            playerSanity = playerSanity - 1;
+        }
+        
+    }
+    else
+    {
+        Console.WriteLine("Ghosts are scurry");
+        playerSanity = playerSanity - 1; 
+    }
+
+}
+
 
