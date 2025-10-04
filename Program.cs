@@ -76,8 +76,11 @@ Console.WriteLine("You are in Room " + roomNumber);
 //If there are still ghosts in the house, check if there's one in this room
 if (numberOfGhosts > 0)
 {
+     
 //There is a 50/50 chance there's a ghost in the room
-    int ghostInRoomCheck = randomIntegerGenerator.Next(0, 1);
+    
+    int ghostInRoomCheck = randomIntegerGenerator.Next(0, 2);
+      
     if (ghostInRoomCheck == 1)
     {
         Console.WriteLine(ghostInRoom);
@@ -89,7 +92,7 @@ if (numberOfGhosts > 0)
         Console.WriteLine(batteryCapacityText);
         Console.WriteLine(willYouScareGhost);
         string answer = Console.ReadLine();
-        if (answer == 'Yes')
+        if (answer == "Yes")
         {
             if (batteryCapacity > 0)
             {
