@@ -92,6 +92,7 @@ while (numberOfGhosts > 0)
         Console.WriteLine(ghostInRoom);
         isThereAGhostInThisRoom = true;
     }
+    else isThereAGhostInThisRoom = false;
 
     if (isThereAGhostInThisRoom)
     {
@@ -120,6 +121,7 @@ while (numberOfGhosts > 0)
                 }
 
                 batteryCapacity = batteryCapacity - 1;
+                batteryCapacityText = string.Format("You have a battery capacity of {0}", batteryCapacity);
 
 
             }
@@ -153,6 +155,7 @@ while (numberOfGhosts > 0)
     else if (playerSanity <= 0)
     {
         Console.WriteLine(gameFailure);
+        break;
     }
 }
         
