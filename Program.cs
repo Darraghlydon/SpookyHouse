@@ -55,6 +55,9 @@ string gameFailure =
 //For the game itself, if you see a ghost in a room and choose not to scare it away before you leave, your sanity will drop by 1.
 //If your sanity drops too low, bad things happen! 
 
+//At the start, the player will always move forward until they have searched all the rooms. Then they will go backwards through
+//the house and repeat until all the ghosts are gone or the player is insane. 
+bool movingForward = true;
 
 bool hasTorch = false;
 bool hasKey = false;
@@ -62,6 +65,39 @@ bool isTheKeyInThisRoom = false;
 bool isThereAGhostInThisRoom = false;
 
 string playerName = "";
+
+
+
+//We can use arrays and lists to keep track of what items we have in the game
+List<string> playerInventory = new List<string>();
+//A battery increases your capacity by 1, a flame can be used to instantly scare away a ghost, and the book and hot chocolate boost your sanity. 
+List<string> inGameItems = new List<string>() {"Battery","Flame","Book about Ghosts","Hot Chocolate"};
+
+string [] itemLocations = new string[numberOfRoomsInHouse];
+//Go through all the items and potentially place them in a room in the house. Not all items may be present in each run through. 
+foreach (string item in inGameItems)
+{
+    //go through each room, and if there is not an item there a random check will potentially place one.  
+    for (int i = 0; i < numberOfRoomsInHouse; i++)
+    {
+        //Check if there is already an item in this room
+        if (String.IsNullOrEmpty(itemLocations[i]))
+        {
+            //There is a 1 in 4 chance we will place an item in this room
+            int placeItemHere = randomIntegerGenerator.Next(0, 4);
+
+            if (placeItemHere == 1)
+            {
+                itemLocations[i] = item;
+                break;
+            }
+            
+        }
+    }
+    
+}
+
+
 #endregion
 
 
@@ -82,6 +118,18 @@ Console.WriteLine("Which is unfortunate, as there are "+numberOfGhosts + " spook
 while (numberOfGhosts > 0)
 {
     Console.WriteLine("You are in Room " + roomNumber);
+    
+    //Check if there is an item in this room. 
+    if (!String.IsNullOrEmpty(itemLocations[roomNumber]))
+    {
+        Console.Write("There is a " + itemLocations[roomNumber]+" here, do you want to pick it up?");
+        string pickUpItemResponse = Console.ReadLine();
+        if (pickUpItemResponse == "Yes")
+        {
+            playerInventory.Add(itemLocations[roomNumber]);
+            itemLocations[roomNumber] = null;
+        }
+    }
 
 //There is a 50/50 chance there's a ghost in the room
 
@@ -110,17 +158,17 @@ while (numberOfGhosts > 0)
                 if (scareAwayValue >= ghostInRoomCheck)
                 {
                     Console.WriteLine(scareAwaySuccess);
-                    numberOfGhosts = numberOfGhosts - 1;
-                    playerSanity = playerSanity + 1;
+                    numberOfGhosts -= 1;
+                    playerSanity += 1;
                 }
                 else
                 {
                     Console.WriteLine(scareAwayFailed);
                     //trying to scare away a ghost and failing is worse than just running from one.
-                    playerSanity = playerSanity - 2;
+                    playerSanity -= 2;
                 }
 
-                batteryCapacity = batteryCapacity - 1;
+                batteryCapacity -= 1;
                 batteryCapacityText = string.Format("You have a battery capacity of {0}", batteryCapacity);
 
 
@@ -128,14 +176,14 @@ while (numberOfGhosts > 0)
             else
             {
                 Console.WriteLine(batteryEmptyText);
-                playerSanity = playerSanity - 1;
+                playerSanity -= 1;
             }
 
         }
         else
         {
             Console.WriteLine(runAwayText);
-            playerSanity = playerSanity - 1;
+            playerSanity -= 1;
         }
 
     }
@@ -144,8 +192,18 @@ while (numberOfGhosts > 0)
         Console.WriteLine(noGhostInRoom);
     }
 
-
-    ++roomNumber;
+    if (movingForward)
+    {
+        ++roomNumber;
+        if (roomNumber == numberOfRoomsInHouse)
+            movingForward = false;
+    }
+    else
+    {
+        --roomNumber;
+        if (roomNumber == 0)
+            movingForward = true;
+    }
 
 
     if (numberOfGhosts == 0)
