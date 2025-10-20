@@ -20,6 +20,8 @@ Random randomIntegerGenerator = new Random();
 #region Variables
 //A spooky house with less than 4 rooms isn't very spooky, while more than 9 is simply terrifying. 
 int numberOfRoomsInHouse = randomIntegerGenerator.Next(4, 9);
+//We want a way to keep track of which rooms we have gone in to. 
+int unCheckedRooms = numberOfRoomsInHouse;
 //There should be less ghosts than rooms in the house, which is why we set numberOfRooms as our maximum value here. 
 int numberOfGhosts = randomIntegerGenerator.Next(1, numberOfRoomsInHouse);
 //But to retain our spookiness, there should be more ghosts than torch battery, which will be used to scare them away
@@ -71,16 +73,20 @@ Console.WriteLine("Welcome "+ playerName+". You are feeling as sane as the numbe
 
 Console.WriteLine("You have a battery capacity on your torch of "+batteryCapacity);
 Console.WriteLine("Which is unfortunate, as there are "+numberOfGhosts + " spooky ghosts in the house.");
-Console.WriteLine("You are in Room " + roomNumber);
+
+
+
+
 
 //If there are still ghosts in the house, check if there's one in this room
-if (numberOfGhosts > 0)
+while (numberOfGhosts > 0)
 {
-     
+    Console.WriteLine("You are in Room " + roomNumber);
+
 //There is a 50/50 chance there's a ghost in the room
-    
+
     int ghostInRoomCheck = randomIntegerGenerator.Next(0, 2);
-      
+
     if (ghostInRoomCheck == 1)
     {
         Console.WriteLine(ghostInRoom);
@@ -98,7 +104,7 @@ if (numberOfGhosts > 0)
             {
                 Console.WriteLine(attemptToScareGhost);
                 //Find the ghost's level, and check if we can scare it away
-                ghostInRoomCheck = randomIntegerGenerator.Next(1,5);
+                ghostInRoomCheck = randomIntegerGenerator.Next(1, 5);
                 scareAwayValue = randomIntegerGenerator.Next(1, 6);
                 if (scareAwayValue >= ghostInRoomCheck)
                 {
@@ -112,9 +118,10 @@ if (numberOfGhosts > 0)
                     //trying to scare away a ghost and failing is worse than just running from one.
                     playerSanity = playerSanity - 2;
                 }
+
                 batteryCapacity = batteryCapacity - 1;
-                
-                
+
+
             }
             else
             {
@@ -135,6 +142,10 @@ if (numberOfGhosts > 0)
         Console.WriteLine(noGhostInRoom);
     }
 
+
+    ++roomNumber;
+
+
     if (numberOfGhosts == 0)
     {
         Console.WriteLine(gameSuccess);
@@ -143,8 +154,11 @@ if (numberOfGhosts > 0)
     {
         Console.WriteLine(gameFailure);
     }
-        
 }
+        
+        
+        
+    
 
 
 
