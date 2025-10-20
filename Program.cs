@@ -192,10 +192,11 @@ while (numberOfGhosts > 0)
         Console.WriteLine(noGhostInRoom);
     }
 
+    //the player moves through the house from the beginning to the end in a sequence. If they get to the end, reverse direction
     if (movingForward)
     {
         ++roomNumber;
-        if (roomNumber == numberOfRoomsInHouse)
+        if (roomNumber == numberOfRoomsInHouse-1)
             movingForward = false;
     }
     else
